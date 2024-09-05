@@ -4,12 +4,17 @@ import { FC } from "react";
 interface TableSkeletonProps {
   cols: number;
   rows?: number;
+  height?: number;
 }
 
-const TableSkeleton: FC<TableSkeletonProps> = ({ cols, rows = 5 }) => {
+const TableSkeleton: FC<TableSkeletonProps> = ({
+  cols,
+  rows = 5,
+  height = 28,
+}) => {
   const skeletonHeadRows = Array.from({ length: cols }, (_, colIndex) => (
     <Table.Th key={`skeleton-cell-${colIndex}`}>
-      <Skeleton height={28} width="35%" />
+      <Skeleton height={height} width="35%" />
     </Table.Th>
   ));
 
@@ -17,7 +22,7 @@ const TableSkeleton: FC<TableSkeletonProps> = ({ cols, rows = 5 }) => {
     <Table.Tr key={`skeleton-row-${rowIndex}`}>
       {Array.from({ length: cols }, (_, colIndex) => (
         <Table.Td key={`skeleton-cell-${rowIndex}-${colIndex}`}>
-          <Skeleton height={28} width="35%" />
+          <Skeleton height={height} width="35%" />
         </Table.Td>
       ))}
     </Table.Tr>

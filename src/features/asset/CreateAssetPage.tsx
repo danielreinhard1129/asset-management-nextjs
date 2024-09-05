@@ -1,18 +1,19 @@
 import DashboardWrapper from "@/components/DashboardWrapper";
-import AssetList from "./components/AssetList";
+import AssetFormCreate from "./components/AssetFormCreate";
 
-const AssetsPage = () => {
+const CreateAssetPage = () => {
   return (
     <DashboardWrapper
       title="Assets"
       links={[
         { title: "Dashboard", href: "/" },
         { title: "Assets", href: "/dashboard/assets" },
+        { title: "Create", href: "/dashboard/assets/create" },
       ]}
     >
-      <AssetList />
+      <AssetFormCreate />
     </DashboardWrapper>
   );
 };
 
-export default AssetsPage;
+export default CreateAssetPage;

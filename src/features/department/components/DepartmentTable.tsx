@@ -33,7 +33,7 @@ const DepartmentTable: FC<DepartmentTableProps> = ({ departments }) => {
           <Table.Tr>
             <Table.Th>Department</Table.Th>
             <Table.Th>Location</Table.Th>
-            <Table.Th>Actions</Table.Th>
+            <Table.Th>Action</Table.Th>
           </Table.Tr>
         </Table.Thead>
 
