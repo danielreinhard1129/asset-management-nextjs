@@ -23,8 +23,13 @@ const FormLogin = () => {
 
   const { executeAsync, status } = useAction(loginAction, {
     onSuccess: async ({ data }) => {
-      await signIn("credentials", { ...data, redirect: false });
-      router.replace(data?.role === "SUPER_ADMIN" ? "/dashboard" : "/");
+      await signIn("credentials", {
+        ...data,
+        departmentName: data?.department.name,
+        departmentAddress: data?.department.address,
+        redirect: false,
+      });
+      router.replace(data?.role !== "USER" ? "/dashboard" : "/");
       toast.success("Login success");
     },
     onError: ({ error }) => {
@@ -56,7 +61,6 @@ const FormLogin = () => {
           type="submit"
           w="100%"
           mt="xl"
-          variant="gradient"
           disabled={status === "executing"}
         >
           Login

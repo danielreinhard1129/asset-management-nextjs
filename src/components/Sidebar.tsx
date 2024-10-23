@@ -1,93 +1,169 @@
-import { Button, Flex, NavLink, Stack, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { Role } from "@/features/user/types";
 import {
-  IconArrowBarLeft,
-  IconBasketPlus,
+  Collapse,
+  Flex,
+  NavLink,
+  Stack,
+  Text,
+  UnstyledButton,
+} from "@mantine/core";
+import {
   IconCategory,
+  IconChevronDown,
+  IconChevronUp,
+  IconDevices,
+  IconFileArrowLeft,
   IconHome2,
+  IconLicense,
+  IconSettings,
   IconUsers,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FC, useState } from "react";
 import MenuAvatar from "./MenuAvatar";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const session = useSession();
+  const { data: session } = useSession();
 
-  const isActive = (route: string) => pathname.startsWith(route);
-
-  const openLogoutModal = () =>
-    modals.openConfirmModal({
-      title: "Logout",
-      centered: true,
-      children: <Text size="sm">Are you sure you want to log out?</Text>,
-      labels: { confirm: "Logout", cancel: "Cancel" },
-      confirmProps: { color: "red" },
-      onConfirm: async () => await signOut(),
-    });
+  if (!session) {
+    return;
+  }
 
   return (
     <Flex direction="column" justify="space-between" h="100%">
       <Stack>
-        <NavLink
-          component={Link}
-          href="/dashboard"
-          label="Dashboard"
-          variant="light"
-          active={pathname === "/dashboard"}
-          leftSection={<IconHome2 />}
-        />
-        <NavLink
-          component={Link}
-          href="/dashboard/assets"
-          label="Assets"
-          variant="light"
-          active={isActive("/dashboard/assets")}
-          leftSection={<IconBasketPlus />}
-        />
-        <NavLink
-          component={Link}
-          href="/dashboard/categories"
-          label="Categories"
-          variant="light"
-          active={isActive("/dashboard/categories")}
-          leftSection={<IconCategory />}
-        />
-        <NavLink
-          component={Link}
-          href="/dashboard/employees"
-          label="Employees"
-          variant="light"
-          active={isActive("/dashboard/employees")}
-          leftSection={<IconUsers />}
-        />
-        <NavLink
-          component={Link}
-          href="/dashboard/departments"
-          label="Departments"
-          variant="light"
-          active={isActive("/dashboard/departments")}
-          leftSection={<IconUsersGroup />}
-        />
-        <NavLink
-          component={Button}
-          label="Logout"
-          onClick={openLogoutModal}
-          bg="transparent"
-          c="red"
-          leftSection={<IconArrowBarLeft />}
-        />
+        {singleItems
+          .filter((item) => item.role.includes(session.user.role))
+          .map((item) => (
+            <NavLink
+              key={item.href}
+              component={Link}
+              href={item.href}
+              label={item.label}
+              variant="light"
+              color="red"
+              active={pathname === item.href}
+              leftSection={item.icon}
+            />
+          ))}
+
+        {multipleItems
+          .filter((item) => item.role.includes(session.user.role))
+          .map((item, idx) => (
+            <SidebarButtonCollapse key={idx} {...item} pathname={pathname} />
+          ))}
       </Stack>
 
       <MenuAvatar
-        name={`${session.data?.user.firstName} ${session.data?.user.lastName}`}
-        email={session.data?.user.email || ""}
+        name={`${session.user.firstName} ${session.user.lastName}`}
+        email={session.user.email || ""}
       />
     </Flex>
   );
 };
+
+const SidebarButtonCollapse: FC<{
+  label: string;
+  pathname: string;
+  icon: JSX.Element;
+  role: Role[];
+  links: {
+    label: string;
+    href: string;
+    icon: JSX.Element;
+    role: Role[];
+  }[];
+}> = (props) => {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <>
+      <UnstyledButton px="12px" py="8px" onClick={() => setOpened((o) => !o)}>
+        <Flex align="center" justify="space-between">
+          <Flex align="center" gap="sm">
+            <IconSettings />
+            <Text size="sm">Master Data</Text>
+          </Flex>
+          {opened ? <IconChevronUp /> : <IconChevronDown />}
+        </Flex>
+      </UnstyledButton>
+      <Collapse in={opened}>
+        <Stack ml="xl">
+          {props.links.map((link) => (
+            <NavLink
+              key={link.href}
+              component={Link}
+              href={link.href}
+              label={link.label}
+              variant="light"
+              color="red"
+              active={props.pathname === link.href}
+              leftSection={link.icon}
+            />
+          ))}
+        </Stack>
+      </Collapse>
+    </>
+  );
+};
+
+const singleItems = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: <IconHome2 />,
+    role: [Role.ADMIN, Role.HR],
+  },
+  {
+    label: "Assets",
+    href: "/dashboard/assets",
+    icon: <IconDevices />,
+    role: [Role.ADMIN],
+  },
+  {
+    label: "Asset Request",
+    href: "/dashboard/asset-requests",
+    icon: <IconLicense />,
+    role: [Role.ADMIN, Role.HR],
+  },
+  {
+    label: "Asset Return",
+    href: "/dashboard/asset-returned",
+    icon: <IconFileArrowLeft />,
+    role: [Role.ADMIN, Role.HR],
+  },
+];
+
+const multipleItems = [
+  {
+    label: "Master Data",
+    icon: <IconSettings />,
+    role: [Role.ADMIN],
+    links: [
+      {
+        label: "Accounts",
+        href: "/dashboard/accounts",
+        icon: <IconUsers />,
+        role: [Role.ADMIN],
+      },
+      {
+        label: "Asset Categories",
+        href: "/dashboard/asset-categories",
+        icon: <IconCategory />,
+        role: [Role.ADMIN],
+      },
+      {
+        label: "Departments",
+        href: "/dashboard/departments",
+        icon: <IconUsersGroup />,
+        role: [Role.ADMIN],
+      },
+    ],
+  },
+];
 
 export default Sidebar;

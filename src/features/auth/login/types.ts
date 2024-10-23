@@ -1,4 +1,3 @@
-import { Department } from "@/features/department/types";
 import { User } from "@/features/user/types";
 
 export interface Login {
@@ -8,5 +7,6 @@ export interface Login {
 
 export interface LoginPayload extends User {
   accessToken: string;
-  department: Pick<Department, "name">;
+  departmentName: string;
+  departmentAddress: string;
 }

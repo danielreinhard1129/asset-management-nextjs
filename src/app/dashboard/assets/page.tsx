@@ -1,6 +1,13 @@
-import AssetsPage from "@/features/asset";
+import AssetsPage from "@/features/dashboard/asset";
+import { auth } from "@/lib/auth";
+import { notFound } from "next/navigation";
 
-const Assets = () => {
+const Assets = async () => {
+  const session = await auth();
+
+  if (session?.user.role !== "ADMIN") {
+    return notFound();
+  }
   return <AssetsPage />;
 };
 

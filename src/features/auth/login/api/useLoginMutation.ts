@@ -20,7 +20,7 @@ const useLoginMutation = () => {
     onSuccess: async (data) => {
       await signIn("credentials", { ...data.data, redirect: false });
       toast.success("Login success");
-      router.push(data.data.role === "SUPER_ADMIN" ? "/dashboard" : "/");
+      router.replace(data.data.role !== "USER" ? "/dashboard" : "/");
     },
     onError: (error: AxiosError<ErrorResponse>) => {
       toast.error(error.response?.data.message);

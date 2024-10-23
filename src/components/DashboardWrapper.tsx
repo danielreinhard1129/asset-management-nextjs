@@ -13,7 +13,11 @@ const DashboardWrapper: FC<DashboardWrapperProps> = ({
   children,
 }) => {
   return (
-    <Flex direction="column">
+    <Flex
+      style={{ backgroundColor: "white", borderRadius: "8px" }}
+      direction="column"
+      p="xl"
+    >
       <Stack gap="sm">
         <Title size="h3">{title}</Title>
         <Breadcrumbs>

@@ -1,13 +1,14 @@
 import NextAuthProvider from "@/providers/NextAuthProvider";
 import ReactQueryProviders from "@/providers/ReactQueryProvider";
+import "@mantine/charts/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import { ModalsProvider } from "@mantine/modals";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import { ModalsProvider } from "@mantine/modals";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReactQueryProviders>
           <NextAuthProvider>
-            <MantineProvider defaultColorScheme="dark">
+            <MantineProvider
+              defaultColorScheme="light"
+              theme={{ primaryColor: "red" }}
+            >
               <ModalsProvider>{children}</ModalsProvider>
             </MantineProvider>
           </NextAuthProvider>

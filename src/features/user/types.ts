@@ -1,3 +1,5 @@
+import { Department } from "../dashboard/department/types";
+
 export interface User {
   id: number;
   firstName: string;
@@ -6,12 +8,13 @@ export interface User {
   role: Role;
   provider: Provider;
   departmentId: number;
+  department: Department;
 }
 
 export enum Role {
-  SUPER_ADMIN = "SUPER_ADMIN",
-  EMPLOYEE = "EMPLOYEE",
-  CUSTOMER = "CUSTOMER",
+  ADMIN = "ADMIN",
+  HR = "HR",
+  USER = "USER",
 }
 export enum Provider {
   GOOGLE = "GOOGLE",
