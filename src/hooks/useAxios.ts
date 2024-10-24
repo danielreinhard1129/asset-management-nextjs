@@ -28,10 +28,9 @@ const useAxios = () => {
       (response) => response,
       async (err) => {
         if (
-          err?.response?.status === 401 &&
-          (err.response.data.message === "Token expired" ||
-            err.response.data.message === "Token is missing" ||
-            err.response.data.message === "Invalid token")
+          err.response.data.message === "Token expired" ||
+          err.response.data.message === "Token is missing" ||
+          err.response.data.message === "Invalid token"
         ) {
           await signOut();
           queryClient.removeQueries();

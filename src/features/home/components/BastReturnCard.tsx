@@ -8,9 +8,13 @@ import { FC, useMemo } from "react";
 
 interface BastReturnCardProps {
   assetReturned: AssetReturned;
+  onClick: () => void;
 }
 
-const BastReturnCard: FC<BastReturnCardProps> = ({ assetReturned }) => {
+const BastReturnCard: FC<BastReturnCardProps> = ({
+  assetReturned,
+  onClick,
+}) => {
   const statusColor = useMemo(() => {
     switch (assetReturned.status) {
       case StatusAssetReturned.APPROVE:
@@ -34,7 +38,7 @@ const BastReturnCard: FC<BastReturnCardProps> = ({ assetReturned }) => {
       style={{ border: "1px solid lightgray", borderRadius: "4px" }}
       justify="space-between"
       align="center"
-      //   onClick={onClick}
+      onClick={onClick}
     >
       <Flex gap="lg" align="center">
         <IconFileDescription size="44px" color={statusColor} />

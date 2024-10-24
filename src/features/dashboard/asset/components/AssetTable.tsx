@@ -1,14 +1,29 @@
+import ModalQRCode from "@/components/ModalQRCode";
 import TableDataEmpty from "@/components/TableDataEmpty";
+import { Asset } from "@/features/asset/types";
 import { capitalizeFirstLetters } from "@/utils/formatters";
-import { ActionIcon, Badge, Image, Menu, rem, Table } from "@mantine/core";
 import {
+  ActionIcon,
+  Badge,
+  Image,
+  Menu,
+  rem,
+  Table,
+  Text,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  IconBarcode,
   IconDotsVertical,
   IconEdit,
   IconInfoCircle,
   IconTrash,
 } from "@tabler/icons-react";
-import { FC, useMemo } from "react";
-import { Asset, Status } from "../types";
+import { FC, useMemo, useState } from "react";
+import { Status } from "../types";
+import { modals } from "@mantine/modals";
+import useDeleteAsset from "../api/useDeleteAsset";
+import AssetDetailModal from "./AssetDetailModal";
 
 interface AssetTableProps {
   assets: Asset[];
@@ -29,7 +44,23 @@ const AssetTableHead: FC = () => {
   );
 };
 
-const AssetTableRow: FC<{ asset: Asset }> = ({ asset }) => {
+const AssetTableRow: FC<{
+  asset: Asset;
+  openQr: () => void;
+  openDetail: () => void;
+  setSelectedAssetId: (id: string) => void;
+  setTitle: (value: string) => void;
+  openDeleteAssetModal: (assetId: number) => void;
+  setSelectedAssetDetail: (asset: Asset) => void;
+}> = ({
+  asset,
+  openQr,
+  openDetail,
+  setSelectedAssetId,
+  setTitle,
+  openDeleteAssetModal,
+  setSelectedAssetDetail,
+}) => {
   const statusColor = useMemo(() => {
     switch (asset.status) {
       case Status.AVAILABLE:
@@ -79,10 +110,22 @@ const AssetTableRow: FC<{ asset: Asset }> = ({ asset }) => {
 
           <Menu.Dropdown>
             <Menu.Item
-              // onClick={() => {
-              //   setDepartment(department);
-              //   open();
-              // }}
+              onClick={() => {
+                setSelectedAssetId(String(asset.id));
+                setTitle(`${asset.name}-${asset.serial}`);
+                openQr();
+              }}
+              leftSection={
+                <IconBarcode style={{ width: rem(14), height: rem(14) }} />
+              }
+            >
+              QR Code
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                setSelectedAssetDetail(asset);
+                openDetail();
+              }}
               leftSection={
                 <IconInfoCircle style={{ width: rem(14), height: rem(14) }} />
               }
@@ -101,7 +144,7 @@ const AssetTableRow: FC<{ asset: Asset }> = ({ asset }) => {
               Edit
             </Menu.Item>
             <Menu.Item
-              // onClick={() => openDeleteModal(department)}
+              onClick={() => openDeleteAssetModal(asset.id)}
               leftSection={
                 <IconTrash style={{ width: rem(14), height: rem(14) }} />
               }
@@ -116,6 +159,37 @@ const AssetTableRow: FC<{ asset: Asset }> = ({ asset }) => {
 };
 
 const AssetTable: FC<AssetTableProps> = ({ assets }) => {
+  const [openedQr, { open: openQr, close: closeQr }] = useDisclosure(false);
+  const [openedDetail, { open: openDetail, close: closeDetail }] =
+    useDisclosure(false);
+  const [selectedAssetId, setSelectedAssetId] = useState("");
+  const [title, setTitle] = useState("");
+  const [selectedAssetDetail, setSelectedAssetDetail] = useState<Asset | null>(
+    null
+  );
+
+  const clearValue = () => {
+    setSelectedAssetId("");
+    setTitle("");
+  };
+
+  const { mutateAsync: deleteAsset } = useDeleteAsset();
+
+  const openDeleteAssetModal = (assetId: number) => {
+    modals.openConfirmModal({
+      title: `Delete Asset`,
+      centered: true,
+      children: (
+        <Text size="sm">Please click one of these buttons to proceed.</Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => {
+        deleteAsset(assetId);
+      },
+    });
+  };
+
   return (
     <Table
       highlightOnHover={!!assets.length}
@@ -127,9 +201,30 @@ const AssetTable: FC<AssetTableProps> = ({ assets }) => {
       <Table.Tbody>
         {!assets.length && <TableDataEmpty colSpan={6} />}
         {assets.map((asset, index) => (
-          <AssetTableRow key={index} asset={asset} />
+          <AssetTableRow
+            key={index}
+            asset={asset}
+            openQr={openQr}
+            openDetail={openDetail}
+            setSelectedAssetId={setSelectedAssetId}
+            setTitle={setTitle}
+            openDeleteAssetModal={openDeleteAssetModal}
+            setSelectedAssetDetail={setSelectedAssetDetail}
+          />
         ))}
       </Table.Tbody>
+      <ModalQRCode
+        opened={openedQr}
+        title={title}
+        value={selectedAssetId}
+        close={closeQr}
+        clearValue={clearValue}
+      />
+      <AssetDetailModal
+        opened={openedDetail}
+        close={closeDetail}
+        asset={selectedAssetDetail}
+      />
     </Table>
   );
 };

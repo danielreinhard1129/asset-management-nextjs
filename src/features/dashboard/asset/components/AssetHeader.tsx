@@ -1,5 +1,6 @@
 import { ActionIcon, Button, Flex, Group, Input } from "@mantine/core";
 import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FC } from "react";
 
 interface AssetHeaderProps {
@@ -8,6 +9,8 @@ interface AssetHeaderProps {
 }
 
 const AssetHeader: FC<AssetHeaderProps> = ({ search, onChangeInput }) => {
+  const router = useRouter();
+
   return (
     <>
       <Flex justify="space-between">
@@ -19,17 +22,12 @@ const AssetHeader: FC<AssetHeaderProps> = ({ search, onChangeInput }) => {
         />
 
         <Group>
-          <ActionIcon
-            size="input-sm"
-            aria-label="filter"
-            variant="light"
-            // onClick={openDrawer}
-          >
+          <ActionIcon size="input-sm" aria-label="filter" variant="light">
             <IconFilter />
           </ActionIcon>
           <Button
             leftSection={<IconPlus />}
-            // onClick={openModalCreate}
+            onClick={() => router.push("/dashboard/assets/create")}
           >
             Create
           </Button>

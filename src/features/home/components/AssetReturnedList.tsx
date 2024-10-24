@@ -56,7 +56,7 @@ const AssetReturnedList: FC<AssetReturnedListProps> = ({ search }) => {
           <BastReturnCard
             key={idx}
             assetReturned={assetReturned}
-            // onClick={() => router.push(`/asset-requests/${assetRequest.id}`)}
+            onClick={() => router.push(`/asset-returned/${assetReturned.id}`)}
           />
         ))}
       </Stack>

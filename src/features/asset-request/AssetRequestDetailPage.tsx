@@ -2,21 +2,10 @@
 
 import DashboardEmpty from "@/components/DashboardEmpty";
 import DashboardHeader from "@/components/DashboardHeader";
-import {
-  Badge,
-  Button,
-  Container,
-  Divider,
-  Flex,
-  Grid,
-  List,
-  Text,
-} from "@mantine/core";
-import { format } from "date-fns";
+import { Container, Divider } from "@mantine/core";
 import { useSession } from "next-auth/react";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import useGetAssetRequest from "../dashboard/asset-request/api/useGetAssetRequest";
-import { StatusAssetRequest } from "./types";
 import AssetRequestInfo from "./components/AssetRequestInfo";
 
 interface AssetRequestDetailPageProps {

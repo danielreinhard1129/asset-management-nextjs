@@ -6,7 +6,7 @@ const CreateAssetPage = () => {
     <DashboardWrapper
       title="Assets"
       links={[
-        { title: "Dashboard", href: "/" },
+        { title: "Dashboard", href: "/dashboard" },
         { title: "Assets", href: "/dashboard/assets" },
         { title: "Create", href: "/dashboard/assets/create" },
       ]}
