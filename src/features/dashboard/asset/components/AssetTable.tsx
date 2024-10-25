@@ -24,6 +24,7 @@ import { Status } from "../types";
 import { modals } from "@mantine/modals";
 import useDeleteAsset from "../api/useDeleteAsset";
 import AssetDetailModal from "./AssetDetailModal";
+import { useRouter } from "next/navigation";
 
 interface AssetTableProps {
   assets: Asset[];
@@ -61,6 +62,8 @@ const AssetTableRow: FC<{
   openDeleteAssetModal,
   setSelectedAssetDetail,
 }) => {
+  const router = useRouter();
+
   const statusColor = useMemo(() => {
     switch (asset.status) {
       case Status.AVAILABLE:
@@ -133,10 +136,7 @@ const AssetTableRow: FC<{
               Detail
             </Menu.Item>
             <Menu.Item
-              // onClick={() => {
-              //   setDepartment(department);
-              //   open();
-              // }}
+              onClick={() => router.push(`/dashboard/assets/${asset.id}/edit`)}
               leftSection={
                 <IconEdit style={{ width: rem(14), height: rem(14) }} />
               }
