@@ -19,6 +19,7 @@ const BottomTabs = () => {
       <Flex align="center" justify="space-evenly">
         {items.map(({ href, icon: Icon }) => (
           <Box
+            key={href}
             onClick={() => router.push(href)}
             style={{ cursor: "pointer" }}
             p="10px"

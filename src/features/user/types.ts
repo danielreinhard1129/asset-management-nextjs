@@ -9,6 +9,7 @@ export interface User {
   provider: Provider;
   departmentId: number;
   department: Department;
+  createdAt: Date;
 }
 
 export enum Role {

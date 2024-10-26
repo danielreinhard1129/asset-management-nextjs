@@ -1,15 +1,12 @@
-"use client";
-
 import BottomTabs from "@/components/BottomTabs";
-import { signOut } from "next-auth/react";
+import ProfileHeader from "./components/ProfileHeader";
+import ProfileListButton from "./components/ProfileListButton";
 
 const ProfilePage = () => {
   return (
     <>
-      <div>
-        ProfilePage
-        <button onClick={() => signOut()}>logout</button>
-      </div>
+      <ProfileHeader />
+      <ProfileListButton />
       <BottomTabs />
     </>
   );

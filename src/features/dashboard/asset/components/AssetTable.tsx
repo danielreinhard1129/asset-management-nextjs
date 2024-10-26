@@ -12,6 +12,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import {
   IconBarcode,
   IconDotsVertical,
@@ -19,12 +20,11 @@ import {
   IconInfoCircle,
   IconTrash,
 } from "@tabler/icons-react";
-import { FC, useMemo, useState } from "react";
-import { Status } from "../types";
-import { modals } from "@mantine/modals";
-import useDeleteAsset from "../api/useDeleteAsset";
-import AssetDetailModal from "./AssetDetailModal";
 import { useRouter } from "next/navigation";
+import { FC, useMemo, useState } from "react";
+import useDeleteAsset from "../api/useDeleteAsset";
+import { Status } from "../types";
+import AssetDetailModal from "./AssetDetailModal";
 
 interface AssetTableProps {
   assets: Asset[];

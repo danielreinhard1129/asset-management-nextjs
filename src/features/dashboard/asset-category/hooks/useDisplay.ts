@@ -1,8 +1,8 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
-import useGetAssets from "../api/useGetAssets";
 import { useDebouncedValue } from "@mantine/hooks";
+import useGetCategories from "../../category/api/useGetCategories";
 
 const useDisplay = () => {
   const [page, setPage] = useState<number>(1);
@@ -10,7 +10,7 @@ const useDisplay = () => {
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const [debouncedSearch] = useDebouncedValue(search, 500);
 
-  const { data: assets, isPending } = useGetAssets({
+  const { data: categories, isPending } = useGetCategories({
     page,
     search: debouncedSearch,
     take: 5,
@@ -27,7 +27,7 @@ const useDisplay = () => {
   };
 
   return {
-    assets,
+    categories,
     page,
     search,
     isPending,

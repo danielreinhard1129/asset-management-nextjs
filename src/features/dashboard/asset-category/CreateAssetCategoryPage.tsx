@@ -1,19 +1,19 @@
 import DashboardWrapper from "@/components/DashboardWrapper";
-import React from "react";
-import AssetCategoryList from "./components/AssetCategoryList";
+import AssetCategoryFormCreate from "./components/AssetCategoryFormCreate";
 
-const AssetCategoriesPage = () => {
+const CreateAssetCategoryPage = () => {
   return (
     <DashboardWrapper
       title="Asset Categories"
       links={[
         { title: "Master Data", href: "" },
         { title: "Asset Categories", href: "/dashboard/asset-categories" },
+        { title: "Create", href: "" },
       ]}
     >
-      <AssetCategoryList />
+      <AssetCategoryFormCreate />
     </DashboardWrapper>
   );
 };
 
-export default AssetCategoriesPage;
+export default CreateAssetCategoryPage;

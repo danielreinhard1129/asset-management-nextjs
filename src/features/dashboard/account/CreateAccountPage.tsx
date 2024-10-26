@@ -1,18 +1,19 @@
 import DashboardWrapper from "@/components/DashboardWrapper";
-import AccountList from "./components/AccountList";
+import AccountFormCreate from "./components/AccountFormCreate";
 
-const AccountsPage = () => {
+const CreateAccountPage = () => {
   return (
     <DashboardWrapper
       title="Accounts"
       links={[
         { title: "Master Data", href: "" },
         { title: "Accounts", href: "/dashboard/accounts" },
+        { title: "Create", href: "" },
       ]}
     >
-      <AccountList />
+      <AccountFormCreate />
     </DashboardWrapper>
   );
 };
 
-export default AccountsPage;
+export default CreateAccountPage;

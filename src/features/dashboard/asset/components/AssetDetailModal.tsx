@@ -55,11 +55,45 @@ const AssetDetailModal: FC<AssetDetailModalProps> = ({
         </Grid.Col>
 
         <Grid.Col span={5}>
+          <Text fw="bold">Tag</Text>
+        </Grid.Col>
+        <Grid.Col span={7}>
+          <Text>: {asset?.tag}</Text>
+        </Grid.Col>
+
+        <Grid.Col span={5}>
+          <Text fw="bold">Serial</Text>
+        </Grid.Col>
+        <Grid.Col span={7}>
+          <Text>: {asset?.serial}</Text>
+        </Grid.Col>
+
+        <Grid.Col span={5}>
           <Text fw="bold">Status</Text>
         </Grid.Col>
         <Grid.Col span={7}>
           : <Badge color={assetStatus}>{asset?.status}</Badge>
         </Grid.Col>
+
+        <Grid.Col span={5}>
+          <Text fw="bold">Category</Text>
+        </Grid.Col>
+        <Grid.Col span={7}>
+          <Text>: {asset?.category.name}</Text>
+        </Grid.Col>
+
+        {asset?.userId && asset?.user && (
+          <>
+            <Grid.Col span={5}>
+              <Text fw="bold">Checkout To</Text>
+            </Grid.Col>
+            <Grid.Col span={7}>
+              <Text>
+                : {asset.user.firstName} {asset.user.lastName}
+              </Text>
+            </Grid.Col>
+          </>
+        )}
       </Grid>
     </Modal>
   );
