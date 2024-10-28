@@ -1,6 +1,7 @@
 import { TypeBast } from "@/features/bast/types";
 import { Font, StyleSheet, Text, View } from "@react-pdf/renderer";
-import { FC } from "react";
+import { FC, useCallback, useEffect } from "react";
+const GreatVibes = require("./fonts/Great-Vibes.ttf");
 
 interface BastSignUsersProps {
   adminName?: string;
@@ -48,8 +49,18 @@ const BastSignUsers: FC<BastSignUsersProps> = ({
 
   Font.register({
     family: "Great-Vibes",
-    src: "http://fonts.gstatic.com/s/greatvibes/v4/6q1c0ofG6NKsEhAc2eh-3Z0EAVxt0G0biEntp43Qt6E.ttf",
+    format: "truetype",
+    src: GreatVibes,
+    // src: "http://fonts.gstatic.com/s/greatvibes/v4/6q1c0ofG6NKsEhAc2eh-3Z0EAVxt0G0biEntp43Qt6E.ttf",
   });
+
+  const loadFonts = useCallback(async () => {
+    await Promise.all([Font.load({ fontFamily: "Great-Vibes" })]);
+  }, []);
+
+  useEffect(() => {
+    loadFonts();
+  }, [loadFonts]);
 
   return (
     <View style={styles.container}>

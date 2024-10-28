@@ -1,5 +1,6 @@
 import { Font, StyleSheet, Text, View } from "@react-pdf/renderer";
-import { FC } from "react";
+import { FC, useCallback, useEffect } from "react";
+const Oswald = require("./fonts/Oswald.ttf");
 
 interface BastTitleProps {
   title: string;
@@ -19,8 +20,18 @@ const BastTitle: FC<BastTitleProps> = ({ title, bastNo, type }) => {
 
   Font.register({
     family: "Oswald",
-    src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
+    src: Oswald,
+    format: "truetype",
+    // src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
   });
+
+  const loadFonts = useCallback(async () => {
+    await Promise.all([Font.load({ fontFamily: "Oswald" })]);
+  }, []);
+
+  useEffect(() => {
+    loadFonts();
+  }, [loadFonts]);
 
   return (
     <View style={{ marginBottom: 20 }}>
