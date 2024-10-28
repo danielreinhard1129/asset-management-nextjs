@@ -4,6 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import { ErrorResponse } from "@/types/error";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface Payload {
@@ -16,6 +17,7 @@ interface Payload {
 }
 
 export const useCreateAsset = () => {
+  const router = useRouter();
   const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
 
@@ -42,6 +44,7 @@ export const useCreateAsset = () => {
         queryKey: ["info-total-asset-by-status"],
       });
       toast.success("Create Asset success");
+      router.push("/dashboard/assets");
     },
     onError: (error: AxiosError<ErrorResponse>) => {
       toast.error(error.response?.data.message);
