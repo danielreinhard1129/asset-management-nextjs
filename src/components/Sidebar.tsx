@@ -1,5 +1,7 @@
+import useGetInfoPendingRequests from "@/features/info/api/useGetInfoPendingRequests";
 import { Role } from "@/features/user/types";
 import {
+  Box,
   Collapse,
   Flex,
   NavLink,
@@ -28,6 +30,7 @@ import MenuAvatar from "./MenuAvatar";
 const Sidebar = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { data: infoPendingRequets } = useGetInfoPendingRequests();
 
   if (!session) {
     return;
@@ -39,16 +42,36 @@ const Sidebar = () => {
         {singleItems
           .filter((item) => item.role.includes(session.user.role))
           .map((item) => (
-            <NavLink
-              key={item.href}
-              component={Link}
-              href={item.href}
-              label={item.label}
-              variant="light"
-              color="red"
-              active={pathname === item.href}
-              leftSection={item.icon}
-            />
+            <Box pos="relative">
+              <NavLink
+                key={item.href}
+                component={Link}
+                href={item.href}
+                label={item.label}
+                variant="light"
+                color="red"
+                active={pathname === item.href}
+                leftSection={item.icon}
+              />
+
+              {item.href === "/dashboard/asset-requests" &&
+                !!infoPendingRequets?.totalAssetRequest && (
+                  <Box pos="absolute" top={10} right={0}>
+                    <Text fz="xs" fw="bold" c="red">
+                      {infoPendingRequets.totalAssetRequest}
+                    </Text>
+                  </Box>
+                )}
+
+              {item.href === "/dashboard/asset-returned" &&
+                !!infoPendingRequets?.totalAssetReturn && (
+                  <Box pos="absolute" top={10} right={0}>
+                    <Text fz="xs" fw="bold" c="red">
+                      {infoPendingRequets.totalAssetReturn}
+                    </Text>
+                  </Box>
+                )}
+            </Box>
           ))}
 
         {multipleItems

@@ -5,6 +5,10 @@ export interface InfoResources {
   totalUser: number;
   totalBast: number;
 }
+export interface TotalPendingRequests {
+  totalAssetRequest: number;
+  totalAssetReturn: number;
+}
 
 export interface TotalAssetByStatus {
   name: Status;
