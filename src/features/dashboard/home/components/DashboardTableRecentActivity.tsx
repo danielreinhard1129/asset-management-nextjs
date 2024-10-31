@@ -50,7 +50,7 @@ const DashboardTableRecentActivity = () => {
             <Table.Th>Asset</Table.Th>
             <Table.Th>Type</Table.Th>
             <Table.Th>Admin</Table.Th>
-            <Table.Th>User</Table.Th>
+            <Table.Th>Manager</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
