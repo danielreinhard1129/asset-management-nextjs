@@ -47,5 +47,5 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd ${{ secrets.APP_FOLDER }}
-            npm install
+            npm install --legacy-peer-deps
             pm2 start pm2.deploy.config.js
