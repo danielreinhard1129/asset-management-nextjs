@@ -40,7 +40,7 @@ const AccountTableRow: FC<{
         {capitalizeFirstLetters(`${account.firstName} ${account.lastName}`)}
       </Table.Td>
       <Table.Td>{account.email}</Table.Td>
-      <Table.Td>{account.role}</Table.Td>
+      <Table.Td>{account.role === "USER" ? "MANAGER" : account.role}</Table.Td>
       <Table.Td>{account.department.name}</Table.Td>
       <Table.Td>{format(account.createdAt, "dd MMM yyyy - hh:mm")}</Table.Td>
       <Table.Td>
