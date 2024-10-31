@@ -5,7 +5,7 @@ import FormLogin from "./components/FormLogin";
 
 const LoginPage = () => {
   return (
-    <Grid style={{ height: "100vh" }}>
+    <Grid style={{ overflow: "hidden" }}>
       <GridCol pos="relative" display={{ base: "none", sm: "block" }} span={6}>
         <Title pos="absolute" top={16} left={32} style={{ zIndex: 1 }}>
           Logo
