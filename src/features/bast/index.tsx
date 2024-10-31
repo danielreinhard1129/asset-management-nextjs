@@ -1,6 +1,7 @@
 "use client";
 
 import BottomTabs from "@/components/BottomTabs";
+import DashboardEmpty from "@/components/DashboardEmpty";
 import DashboardLoader from "@/components/DashboardLoader";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Container, Input, ScrollArea, Stack, Tabs, Text } from "@mantine/core";
@@ -8,18 +9,16 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useGetInfiniteAssets } from "../asset/api/useGetInfiniteAssets";
 import useGetCategories from "../dashboard/category/api/useGetCategories";
 import RequestSection from "./components/RequestSection";
+import ReturnSection from "./components/ReturnSection";
 import classes from "./components/Tabs/Tabs.module.css";
 import TabsHeader from "./components/Tabs/TabsHeader";
 import useAssetCategoryRequestCart from "./hooks/useAssetCategoryRequestCart";
 import { AssetRequestSchema, AssetRequestSchemaType } from "./schemas";
 import { BastTabs } from "./types";
-import useGetAssets from "../dashboard/asset/api/useGetAssets";
-import { useGetInfiniteAssets } from "../asset/api/useGetInfiniteAssets";
-import ReturnSection from "./components/ReturnSection";
-import InfiniteScroll from "react-infinite-scroll-component";
-import BastReturnCard from "./components/BastReturnCard";
 
 const DATA_LIMIT = 10;
 
@@ -88,7 +87,10 @@ const BastPage = () => {
 
               <ScrollArea h="72vh" type="never">
                 {activeTab === BastTabs.REQUEST && isPending && (
-                  <DashboardLoader h="30vh" />
+                  <DashboardLoader h="40vh" />
+                )}
+                {activeTab === BastTabs.REQUEST && !categories && (
+                  <DashboardEmpty message="No Data" h="40vh" />
                 )}
                 {activeTab === BastTabs.REQUEST && categories && (
                   <FormProvider {...methodsRequest}>
@@ -103,7 +105,10 @@ const BastPage = () => {
                 )}
 
                 {activeTab === BastTabs.RETURN && isPendingMyAssets && (
-                  <DashboardLoader h="30vh" />
+                  <DashboardLoader h="40vh" />
+                )}
+                {activeTab === BastTabs.RETURN && !myAssets?.length && (
+                  <DashboardEmpty message="No Data" h="40vh" />
                 )}
                 {activeTab === BastTabs.RETURN && !!myAssets?.length && (
                   <InfiniteScroll
