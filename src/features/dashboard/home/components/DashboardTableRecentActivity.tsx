@@ -4,6 +4,8 @@ import { Box, Flex, Pagination, Table } from "@mantine/core";
 import { format } from "date-fns";
 import { useState } from "react";
 import useGetAssetHistories from "../../asset-history/api/useGetAssetHistories";
+import DashboardLoader from "@/components/DashboardLoader";
+import DashboardEmpty from "@/components/DashboardEmpty";
 
 const DashboardTableRecentActivity = () => {
   const [page, setPage] = useState(1);
@@ -17,11 +19,11 @@ const DashboardTableRecentActivity = () => {
   };
 
   if (isPending) {
-    return;
+    return <DashboardLoader h="27.2vh" />;
   }
 
   if (!assetHistories) {
-    return;
+    return <DashboardEmpty message="No Data" h="27.2vh" />;
   }
 
   const rows = assetHistories.data.map((assetHistory) => (

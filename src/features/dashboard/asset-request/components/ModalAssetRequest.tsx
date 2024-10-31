@@ -2,7 +2,8 @@ import {
   AssetRequest,
   StatusAssetRequest,
 } from "@/features/asset-request/types";
-import { Divider, Grid, Modal, Text } from "@mantine/core";
+import { Badge, Flex, Grid, List, Modal, Text } from "@mantine/core";
+import { format } from "date-fns";
 import { FC, useMemo } from "react";
 
 interface ModalAssetRequestProps {
@@ -19,8 +20,16 @@ const ModalAssetRequest: FC<ModalAssetRequestProps> = ({
   if (!selectedAssetRequest) return;
 
   return (
-    <Modal opened={opened} onClose={close}>
-      <Divider />
+    <Modal
+      opened={opened}
+      onClose={close}
+      title={
+        <Text size="lg" fw="bold">
+          Asset Request Detail
+        </Text>
+      }
+      styles={{ header: { fontWeight: "bolder" } }}
+    >
       <ModalBody assetRequest={selectedAssetRequest} />
     </Modal>
   );
@@ -28,60 +37,92 @@ const ModalAssetRequest: FC<ModalAssetRequestProps> = ({
 
 export default ModalAssetRequest;
 
-const ModalHeader: FC<{ title: string }> = ({ title }) => {
-  return (
-    <>
-      <Divider />
-    </>
-  );
-};
-
 const ModalBody: FC<{ assetRequest: AssetRequest }> = ({ assetRequest }) => {
-  // const assetStatus = useMemo(() => {
-  //   switch (assetRequest.status) {
-  //     case StatusAssetRequest.APPROVE:
-  //       return "green";
-  //     case StatusAssetRequest.IN_PROGRESS:
-  //       return "cyan";
-  //     case StatusAssetRequest.PENDING:
-  //       return "yellow";
-  //     case StatusAssetRequest.REJECT:
-  //       return "red";
-  //     default:
-  //       return "gray";
-  //   }
-  // }, [assetRequest.status]);
+  const assetRequestStatus = useMemo(() => {
+    switch (assetRequest.status) {
+      case StatusAssetRequest.APPROVE:
+        return "green";
+      case StatusAssetRequest.IN_PROGRESS:
+        return "cyan";
+      case StatusAssetRequest.PENDING:
+        return "yellow";
+      case StatusAssetRequest.REJECT:
+        return "red";
+      default:
+        return "gray";
+    }
+  }, [assetRequest.status]);
 
   return (
     <Grid>
-      <Grid.Col span={5}>
-        <Text fw="bold">Title</Text>
+      <Grid.Col span={4}>
+        <Text fw="bold">BAST No</Text>
       </Grid.Col>
-      {/* <Grid.Col span={7}>
-        <Text>: {assetRequest.asset.name}</Text>
-      </Grid.Col> */}
+      <Grid.Col span={8}>
+        <Text>: {assetRequest.bast.bastNo}</Text>
+      </Grid.Col>
 
-      {/* <Grid.Col span={5}>
+      <Grid.Col span={4}>
+        <Text fw="bold">Manager</Text>
+      </Grid.Col>
+      <Grid.Col span={8}>
+        <Text>
+          : {`${assetRequest.user.firstName} ${assetRequest.user.lastName}`}
+        </Text>
+      </Grid.Col>
+
+      <Grid.Col span={4}>
+        <Text fw="bold">Assign To</Text>
+      </Grid.Col>
+      <Grid.Col span={8}>
+        <Text>: {assetRequest.assignToUser}</Text>
+      </Grid.Col>
+
+      <Grid.Col span={4}>
         <Text fw="bold">Status</Text>
       </Grid.Col>
-      <Grid.Col span={7}>
-        :{" "}
-        <Badge color={assetStatus.color}>
-          <Text>{assetStatus.label}</Text>
-        </Badge>
-      </Grid.Col> */}
-
-      {/* <Grid.Col span={5}>
-        <Text fw="bold">Approve By HR</Text>
+      <Grid.Col span={8}>
+        : <Badge color={assetRequestStatus}>{assetRequest.status}</Badge>
       </Grid.Col>
-      <Grid.Col span={7}>
-        <Text>
-          :{" "}
-          {assetRequest.hrId
-            ? `${assetRequest.hr?.firstName} ${assetRequest.hr?.lastName}`
-            : "-"}
-        </Text>
-      </Grid.Col> */}
+
+      <Grid.Col span={4}>
+        <Text fw="bold">Created At</Text>
+      </Grid.Col>
+      <Grid.Col span={8}>
+        <Text>: {format(assetRequest.createdAt, "dd MMM yyyy - hh:mm")}</Text>
+      </Grid.Col>
+
+      <Grid.Col span={4}>
+        <Text fw="bold">Req Items</Text>
+      </Grid.Col>
+      <Grid.Col span={8}>
+        <Flex gap="xs">
+          <Text>: </Text>
+          <List>
+            {assetRequest.assetRequestItems.map((item) => (
+              <List.Item key={item.id}>{item.category.name}</List.Item>
+            ))}
+          </List>
+        </Flex>
+      </Grid.Col>
+
+      {!!assetRequest.bast.bastItems.length && (
+        <>
+          <Grid.Col span={4}>
+            <Text fw="bold">Assign Assets</Text>
+          </Grid.Col>
+          <Grid.Col span={8}>
+            <Flex gap="xs">
+              <Text>: </Text>
+              <List>
+                {assetRequest.bast.bastItems.map((item) => (
+                  <List.Item key={item.id}>{item.asset.name}</List.Item>
+                ))}
+              </List>
+            </Flex>
+          </Grid.Col>
+        </>
+      )}
     </Grid>
   );
 };

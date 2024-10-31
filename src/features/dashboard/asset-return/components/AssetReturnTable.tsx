@@ -9,6 +9,7 @@ import {
   IconBan,
   IconCheck,
   IconDotsVertical,
+  IconInfoCircle,
   IconLicense,
   IconSquareCheck,
 } from "@tabler/icons-react";
@@ -22,6 +23,8 @@ import useRejectAssetReturn from "../api/useRejectAssetReturn";
 
 interface AssetReturnTableProps {
   assetReturned: AssetReturned[];
+  setSelectedAssetReturn: (value: AssetReturned) => void;
+  openModalAssetReturnDetail: () => void;
 }
 
 const AssetRequestsTableHead: FC = () => {
@@ -41,7 +44,14 @@ const AssetRequestsTableHead: FC = () => {
 const AssetTableRow: FC<{
   assetReturn: AssetReturned;
   role: string;
-}> = ({ assetReturn, role }) => {
+  setSelectedAssetReturn: (value: AssetReturned) => void;
+  openModalAssetReturnDetail: () => void;
+}> = ({
+  assetReturn,
+  role,
+  openModalAssetReturnDetail,
+  setSelectedAssetReturn,
+}) => {
   const router = useRouter();
 
   const statusColor = useMemo(() => {
@@ -97,34 +107,17 @@ const AssetTableRow: FC<{
           </Menu.Target>
 
           <Menu.Dropdown>
-            {/* <Menu.Item
+            <Menu.Item
               onClick={() => {
-                setSelectedAssetRequest(assetRequest);
-                openModalAssetRequestDetail();
+                setSelectedAssetReturn(assetReturn);
+                openModalAssetReturnDetail();
               }}
               leftSection={
                 <IconInfoCircle style={{ width: rem(14), height: rem(14) }} />
               }
             >
               Detail
-            </Menu.Item> */}
-            {/* {role === "ADMIN" && assetRequest.bast.hrId && (
-              <Menu.Item
-                disabled={!!assetRequest.bast.adminId}
-                onClick={() =>
-                  router.push(
-                    `/dashboard/asset-requests/${assetRequest.id}/assign`
-                  )
-                }
-                leftSection={
-                  <IconClipboardPlus
-                    style={{ width: rem(14), height: rem(14) }}
-                  />
-                }
-              >
-                Assign Asset
-              </Menu.Item>
-            )} */}
+            </Menu.Item>
 
             {role === "HR" && (
               <Menu.Item
@@ -180,7 +173,11 @@ const AssetTableRow: FC<{
   );
 };
 
-const AssetReturnTable: FC<AssetReturnTableProps> = ({ assetReturned }) => {
+const AssetReturnTable: FC<AssetReturnTableProps> = ({
+  assetReturned,
+  setSelectedAssetReturn,
+  openModalAssetReturnDetail,
+}) => {
   const { data } = useSession();
 
   return (
@@ -198,6 +195,8 @@ const AssetReturnTable: FC<AssetReturnTableProps> = ({ assetReturned }) => {
             key={index}
             role={data?.user.role || ""}
             assetReturn={assetReturn}
+            setSelectedAssetReturn={setSelectedAssetReturn}
+            openModalAssetReturnDetail={openModalAssetReturnDetail}
           />
         ))}
       </Table.Tbody>

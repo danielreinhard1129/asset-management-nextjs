@@ -4,9 +4,11 @@ import useGetInfoTotalAssetByStatus from "@/features/info/api/useGetInfoTotalAss
 import { PieChart } from "@mantine/charts";
 import { Box, Grid, Stack, Text } from "@mantine/core";
 import DashboardTableRecentActivity from "./DashboardTableRecentActivity";
+import DashboardLoader from "@/components/DashboardLoader";
 
 const DashboardBodyFirst = () => {
-  const { data: infoTotalAssetByStatus } = useGetInfoTotalAssetByStatus();
+  const { data: infoTotalAssetByStatus, isPending } =
+    useGetInfoTotalAssetByStatus();
 
   return (
     <Grid>
@@ -27,21 +29,25 @@ const DashboardBodyFirst = () => {
           style={{ backgroundColor: "white", borderRadius: "8px" }}
         >
           <Text fw="bolder">Asset By Status</Text>
-          <Box
-            p="sm"
-            style={{ border: "1px solid lightgray", borderRadius: "10px" }}
-          >
-            <PieChart
-              mx="auto"
-              size={177}
-              withTooltip
-              withLabelsLine
-              labelsPosition="outside"
-              labelsType="value"
-              withLabels
-              data={infoTotalAssetByStatus || []}
-            />
-          </Box>
+          {isPending ? (
+            <DashboardLoader h="27.2vh" />
+          ) : (
+            <Box
+              p="sm"
+              style={{ border: "1px solid lightgray", borderRadius: "10px" }}
+            >
+              <PieChart
+                mx="auto"
+                size={177}
+                withTooltip
+                withLabelsLine
+                labelsPosition="outside"
+                labelsType="value"
+                withLabels
+                data={infoTotalAssetByStatus || []}
+              />
+            </Box>
+          )}
         </Stack>
       </Grid.Col>
     </Grid>

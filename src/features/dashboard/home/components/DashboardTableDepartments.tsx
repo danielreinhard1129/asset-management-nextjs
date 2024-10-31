@@ -1,5 +1,7 @@
 "use client";
 
+import DashboardEmpty from "@/components/DashboardEmpty";
+import DashboardLoader from "@/components/DashboardLoader";
 import { Box, Flex, Pagination, Table } from "@mantine/core";
 import { useState } from "react";
 import useGetDepartments from "../../department/api/useGetDepartments";
@@ -13,11 +15,11 @@ const DashboardTableDepartments = () => {
   };
 
   if (isPending) {
-    return;
+    return <DashboardLoader h="20.3vh" />;
   }
 
   if (!departments) {
-    return;
+    return <DashboardEmpty message="No Data" h="20.3vh" />;
   }
 
   const rows = departments.data.map((element) => (

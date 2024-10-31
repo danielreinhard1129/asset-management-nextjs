@@ -110,7 +110,7 @@ const AssetTableRow: FC<{
           </Menu.Target>
 
           <Menu.Dropdown>
-            {/* <Menu.Item
+            <Menu.Item
               onClick={() => {
                 setSelectedAssetRequest(assetRequest);
                 openModalAssetRequestDetail();
@@ -120,7 +120,7 @@ const AssetTableRow: FC<{
               }
             >
               Detail
-            </Menu.Item> */}
+            </Menu.Item>
             {role === "ADMIN" && assetRequest.bast.hrId && (
               <Menu.Item
                 disabled={!!assetRequest.bast.adminId}

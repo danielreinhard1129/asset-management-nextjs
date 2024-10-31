@@ -4,6 +4,8 @@ import { Box, Flex, Pagination, Table } from "@mantine/core";
 import { useState } from "react";
 import useGetCategories from "../../category/api/useGetCategories";
 import { format } from "date-fns";
+import DashboardLoader from "@/components/DashboardLoader";
+import DashboardEmpty from "@/components/DashboardEmpty";
 
 const DashboardTableAssetCategories = () => {
   const [page, setPage] = useState(1);
@@ -14,11 +16,11 @@ const DashboardTableAssetCategories = () => {
   };
 
   if (isPending) {
-    return;
+    return <DashboardLoader h="20.3vh" />;
   }
 
   if (!categories) {
-    return;
+    return <DashboardEmpty message="No Data" h="20.3vh" />;
   }
   const rows = categories.data.map((element) => (
     <Table.Tr key={element.id}>

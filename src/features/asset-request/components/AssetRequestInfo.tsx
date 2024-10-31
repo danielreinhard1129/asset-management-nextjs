@@ -1,8 +1,11 @@
-import { Badge, Button, Flex, Grid, List, Text } from "@mantine/core";
+import BastPdf from "@/components/BastPdf";
+import useDoneAssetRequest from "@/features/dashboard/asset-request/api/useDoneAssetRequest";
+import useGetBastByBastNo from "@/features/dashboard/bast/api/useGetBastByBastNo";
+import { Badge, Box, Button, Flex, Grid, List, Text } from "@mantine/core";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { format } from "date-fns";
 import { FC, useMemo } from "react";
 import { AssetRequest, StatusAssetRequest } from "../types";
-import { format } from "date-fns";
-import useDoneAssetRequest from "@/features/dashboard/asset-request/api/useDoneAssetRequest";
 
 interface AssetRequestInfoProps {
   assetRequest: AssetRequest;
@@ -29,6 +32,8 @@ const AssetRequestInfo: FC<AssetRequestInfoProps> = ({ assetRequest }) => {
   const { mutateAsync: claimAssets, isPending } = useDoneAssetRequest(
     assetRequest.id
   );
+
+  const { data: bast } = useGetBastByBastNo(assetRequest.bast.bastNo);
 
   const onClickClaimAssets = async () => {
     await claimAssets();
@@ -96,16 +101,29 @@ const AssetRequestInfo: FC<AssetRequestInfoProps> = ({ assetRequest }) => {
       </Grid>
 
       {!!assetRequest.bast.bastItems.length && (
-        <Button
-          fullWidth
-          mt="xl"
-          color="blue"
-          disabled={!!assetRequest.bast.isCheckedByUser}
-          onClick={onClickClaimAssets}
-          loading={isPending}
-        >
-          Claim Assets
-        </Button>
+        <Box>
+          <Button
+            fullWidth
+            mt="xl"
+            color="blue"
+            disabled={!!assetRequest.bast.isCheckedByUser}
+            onClick={onClickClaimAssets}
+            loading={isPending}
+          >
+            Claim Assets
+          </Button>
+          {bast?.isCheckedByAdmin && bast?.isCheckedByUser && (
+            <PDFDownloadLink
+              document={<BastPdf bast={bast} />}
+              fileName={`${assetRequest.bast.bastNo}.pdf`}
+              style={{ textDecoration: "none" }}
+            >
+              <Button fullWidth mt="sm" variant="light">
+                Download Bast
+              </Button>
+            </PDFDownloadLink>
+          )}
+        </Box>
       )}
     </Flex>
   );

@@ -17,7 +17,7 @@ const BottomTabs = () => {
   const { data: unreadNotifications } = useGetUnreadNotifications();
 
   return (
-    <Box pos="fixed" bottom={0} pb="8px" w="100%" maw="30em">
+    <Box pos="fixed" bottom={0} pb="8px" w="100%" maw="30em" bg="white">
       <Divider pt="8px" />
       <Flex align="center" justify="space-evenly">
         {items.map(({ href, icon: Icon }) => (

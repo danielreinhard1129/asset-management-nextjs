@@ -1,7 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Fieldset, PasswordInput, TextInput } from "@mantine/core";
+import {
+  Box,
+  Button,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { signIn } from "next-auth/react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
@@ -38,35 +46,53 @@ const FormLogin = () => {
   });
 
   return (
-    <form
-      onSubmit={handleSubmit(async (values) => {
-        await executeAsync(values);
-      })}
-    >
-      <Fieldset legend="Login Form" maw="500px" mx="auto">
-        <TextInput
-          label="Email"
-          placeholder="Email"
-          {...register("email")}
-          error={errors.email?.message}
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Password"
-          mt="md"
-          {...register("password")}
-          error={errors.password?.message}
-        />
-        <Button
-          type="submit"
-          w="100%"
-          mt="xl"
-          disabled={status === "executing"}
+    <Stack justify="center" maw="450px" h="100vh" mx="auto" px={{ base: "lg" }}>
+      <form
+        onSubmit={handleSubmit(async (values) => {
+          await executeAsync(values);
+        })}
+      >
+        <Title
+          display={{ base: "block", sm: "none" }}
+          pos="fixed"
+          top={16}
+          left={20}
         >
-          Login
-        </Button>
-      </Fieldset>
-    </form>
+          Logo
+        </Title>
+        <Stack>
+          <Box>
+            <Title fz={{ base: "h2", sm: "h1" }}>Account Login PT XYZ</Title>
+            <Text>Enter your details below.</Text>
+          </Box>
+          <TextInput
+            size="md"
+            label="Email"
+            placeholder="Email"
+            {...register("email")}
+            error={errors.email?.message}
+            required
+          />
+          <PasswordInput
+            size="md"
+            label="Password"
+            placeholder="Password"
+            {...register("password")}
+            error={errors.password?.message}
+            required
+          />
+          <Button
+            size="md"
+            type="submit"
+            w="100%"
+            mt="lg"
+            disabled={status === "executing"}
+          >
+            Login
+          </Button>
+        </Stack>
+      </form>
+    </Stack>
   );
 };
 
