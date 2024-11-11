@@ -21,7 +21,7 @@ const useUpdateAccount = (id: number) => {
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["account"] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      toast.success("Update asset category success");
+      toast.success("Update account success");
       router.push("/dashboard/accounts");
     },
     onError: (error: AxiosError<ErrorResponse>) => {
